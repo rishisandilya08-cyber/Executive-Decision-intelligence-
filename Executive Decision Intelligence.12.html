@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Executive Decision Intelligence</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg1:#0f0c29;--bg2:#302b63;--bg3:#1b1b3a;--card:rgba(255,255,255,.07);--bd:rgba(255,255,255,.14);--tx:#f1f0ff;--mu:#a9a6d6;--ac:#a78bfa;--ac2:#22d3ee;--good:#34d399;--bad:#fb7185;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg1:#f5f3ff;--bg2:#e0e7ff;--bg3:#ecfeff;--card:rgba(255,255,255,.75);--bd:rgba(80,60,160,.18);--tx:#1e1b4b;--mu:#5b5a8a;--good:#059669;--bad:#e11d48}}
+:root[data-theme="dark"]{--bg1:#0f0c29;--bg2:#302b63;--bg3:#1b1b3a}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg1);background-image:linear-gradient(135deg,var(--bg1),var(--bg2) 55%,var(--bg3));background-attachment:fixed;color:var(--tx);min-height:100vh}
+.wrap{max-width:1250px;margin:auto;padding:18px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px}
+h1{margin:0;font-size:clamp(20px,3.4vw,30px);background:linear-gradient(90deg,#22d3ee,#a78bfa,#f472b6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mu);font-size:13px;margin-top:4px}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+nav button,.chip,select,.btn{background:var(--card);border:1px solid var(--bd);color:var(--tx);border-radius:999px;padding:8px 15px;font-size:13px;cursor:pointer;font-family:inherit}
+nav button.on{background:linear-gradient(90deg,#7c3aed,#06b6d4);border-color:transparent;color:#fff}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:16px;backdrop-filter:blur(10px)}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.kpis{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin-bottom:14px}
+.kpi{border-radius:16px;padding:12px;border:1px solid var(--bd);background:var(--card);position:relative;overflow:hidden}
+.kpi:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.kpi small{color:var(--mu);font-size:11px}.kpi b{display:block;font-size:22px;margin:3px 0}.kpi span{font-size:12px;font-weight:600}
+.up{color:var(--good)}.dn{color:var(--bad)}
+h3{margin:0 0 10px;font-size:15px}.tag{font-size:11px;padding:2px 8px;border-radius:99px;background:rgba(167,139,250,.25);color:var(--ac)}
+.cv{position:relative;height:290px}
+.sec{display:none}.sec.on{display:block}
+.big{font-size:40px;font-weight:800;background:linear-gradient(90deg,#34d399,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ins{border-left:4px solid var(--c);padding:10px 12px;margin-bottom:8px;background:var(--card);border-radius:0 12px 12px 0;font-size:13.5px;line-height:1.5}
+.step{display:flex;gap:10px;margin-bottom:10px;font-size:14px;line-height:1.5}.step i{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:700;background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff}
+#chat{height:380px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:4px}
+.m{max-width:88%;padding:10px 13px;border-radius:14px;font-size:13.5px;line-height:1.55}
+.m.u{align-self:flex-end;background:linear-gradient(90deg,#7c3aed,#0891b2);color:#fff}.m.b{align-self:flex-start;background:var(--card);border:1px solid var(--bd)}
+.row{display:flex;gap:8px;margin-top:10px}.row input{flex:1;background:var(--card);border:1px solid var(--bd);color:var(--tx);border-radius:12px;padding:11px;font-size:14px;min-width:0}
+.btn{background:linear-gradient(90deg,#7c3aed,#06b6d4);color:#fff;border:0}
+.sl{margin-bottom:12px;font-size:13px}.sl input{width:100%}.sl div{display:flex;justify-content:space-between}
+.bar{height:8px;border-radius:9px;background:var(--bd);overflow:hidden;margin-top:4px}.bar i{display:block;height:100%}
+.ov{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px}td,th{padding:7px 9px;text-align:left;border-bottom:1px solid var(--bd)}
+</style></head><body><div class="wrap">
+<header><div><h1>◈ Executive Decision Intelligence</h1><div class="sub">KPI → Revenue driver analysis · AI insight agent · What-if simulator · Assumed data (24 months, Nov ’24 – Oct ’26)</div></div>
+<nav id="nav"><button data-t="p" class="on">1 · Problem</button><button data-t="d">2 · Dashboard</button><button data-t="a">3 · AI Agent</button><button data-t="s">4 · Simulator</button></nav></header>
+
+<section class="sec on" id="p"><div class="grid g2">
+<div class="card"><h3>What the problem is saying</h3>
+<div class="step"><i>1</i><div><b>Too many KPIs.</b> Marketing, sales, product and finance each send hundreds of indicators (traffic, CAC, open rate, NPS…).</div></div>
+<div class="step"><i>2</i><div><b>No link to money.</b> Leaders can’t tell which KPIs actually <i>explain</i> revenue and profit movement, and which are vanity metrics.</div></div>
+<div class="step"><i>3</i><div><b>The ask.</b> Build an LLM-powered system that connects operational KPIs to financial outcomes and writes evidence-based insights executives can act on.</div></div>
+<div class="step"><i>4</i><div><b>Your role as analyst.</b> Build the data layer + statistical drivers, then let an AI agent narrate, answer questions, and simulate decisions.</div></div></div>
+<div class="card"><h3>Solution architecture</h3>
+<div class="ins" style="--c:#22d3ee"><b>Data layer</b> – KPIs from CRM, ads, web analytics, finance → one monthly table.</div>
+<div class="ins" style="--c:#a78bfa"><b>Analytics engine</b> – correlation, ridge regression (driver importance), month-over-month variance attribution.</div>
+<div class="ins" style="--c:#f472b6"><b>LLM agent</b> – receives the computed numbers as evidence and writes the explanation (grounded, no guessing).</div>
+<div class="ins" style="--c:#34d399"><b>Decision layer</b> – what-if simulator + prioritized recommendations.</div>
+<p class="sub">This demo’s agent is rule-based on the same computed evidence. In production, send the evidence JSON to an LLM API to phrase the answers.</p>
+<button class="btn" onclick="go('d')">Open dashboard →</button></div></div></section>
+
+<section class="sec" id="d"><div class="kpis" id="kp"></div>
+<div class="grid g2">
+<div class="card"><h3>Revenue &amp; profit vs a KPI <select id="ov"></select></h3><div class="cv"><canvas id="c1"></canvas></div></div>
+<div class="card"><h3>What truly drives revenue <span class="tag">ridge regression importance</span></h3><div class="cv"><canvas id="c2"></canvas></div></div>
+<div class="card"><h3>Why did revenue move? <select id="mo"></select></h3><div class="cv"><canvas id="c3"></canvas></div><div class="sub" id="vt"></div></div>
+<div class="card"><h3>Auto-generated executive insights</h3><div id="feed"></div><h3 style="margin-top:12px">Correlation with revenue</h3><div class="ov" id="ct"></div></div></div></section>
+
+<section class="sec" id="a"><div class="card"><h3>🤖 Decision Intelligence Agent</h3><div id="chat"></div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px" id="chips"></div>
+<div class="row"><input id="q" placeholder="Ask: Which KPIs matter most? Why did revenue change?" autocomplete="off"><button class="btn" id="go">Ask</button></div></div></section>
+
+<section class="sec" id="s"><div class="grid g2"><div class="card"><h3>What-if simulator <span class="tag">change a KPI, see revenue</span></h3><div id="sl"></div><button class="chip" id="rs">Reset</button></div>
+<div class="card"><h3>Predicted next-month impact</h3><div class="sub">Baseline revenue (latest month)</div><div id="base" style="font-size:22px;font-weight:700"></div><div class="sub" style="margin-top:12px">Revenue change</div><div class="big" id="dl">$0k</div><div class="sub" id="dp"></div><div class="cv" style="height:200px;margin-top:10px"><canvas id="c4"></canvas></div></div></div></section>
+</div>
+<script>
+const $=s=>document.querySelector(s),N=24;
+function rng(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const R=rng(11),g=()=>(R()+R()+R()+R()-2)*1.73;
+const L=[...Array(N)].map((_,i)=>new Date(2024,10+i,1).toLocaleString('en',{month:'short',year:'2-digit'}));
+const K=[['traffic','Website Traffic','k',1,1,'#22d3ee',1],['conv','Conversion Rate','%',2,1,'#a78bfa',1],['cac','Acquisition Cost','$',1,-1,'#fb7185',1],['email','Email Open Rate','%',1,1,'#34d399',1],['nps','NPS','',0,1,'#fbbf24',1],['churn','Churn Rate','%',2,-1,'#f97316',1],['leadq','Lead Quality','',0,1,'#60a5fa',1],['ads','Ad Spend','$k',0,0,'#e879f9',1],['fol','Social Followers','k',1,1,'#94a3b8',0],['press','Press Mentions','',0,1,'#64748b',0]].map(a=>({id:a[0],n:a[1],u:a[2],d:a[3],dir:a[4],c:a[5],real:a[6]}));
+const D={};K.forEach(k=>D[k.id]=[]);D.rev=[];D.profit=[];
+for(let i=0;i<N;i++){const s=Math.sin(i/2),n=g;
+D.traffic.push(110+2.5*i+12*s+n()*6);D.conv.push(2.2+.02*i+.25*Math.sin(i/3)+n()*.12);D.cac.push(62-.3*i+4*Math.cos(i/2.5)+n()*3);
+D.email.push(21+.1*i+n()*1.2);D.nps.push(38+.4*i+n()*2.5);D.churn.push(4.2-.03*i+n()*.3);D.leadq.push(62+.3*i+n()*3);D.ads.push(80+1.5*i+n()*6);
+D.fol.push(40+1.8*i+n()*1.5);D.press.push(Math.abs(8+n()*3));
+const j=i;D.rev.push(200+2.6*D.traffic[j]*D.conv[j]-3*D.cac[j]+4*D.email[j]+3*D.nps[j]-25*D.churn[j]+1.2*D.leadq[j]+.4*D.ads[j]+n()*25);
+D.profit.push(D.rev[j]*.24-.3*D.ads[j]+n()*6)}
+const mean=a=>a.reduce((x,y)=>x+y,0)/a.length,sd=a=>{const m=mean(a);return Math.sqrt(mean(a.map(x=>(x-m)**2)))};
+const corr=(a,b)=>{const ma=mean(a),mb=mean(b);return a.reduce((s,x,i)=>s+(x-ma)*(b[i]-mb),0)/(a.length*sd(a)*sd(b))};
+const fmt=(v,k)=>(k.u=='$'||k.u=='$k'?'$':'')+v.toFixed(k.d)+(k.u=='%'?'%':k.u=='k'?'k':k.u=='$k'?'k':'');
+// ridge regression on standardized KPIs
+const Z=K.map(k=>{const m=mean(D[k.id]),s=sd(D[k.id]);return D[k.id].map(x=>(x-m)/s)}),my=mean(D.rev),sy=sd(D.rev),y=D.rev.map(x=>(x-my)/sy),p=K.length,lam=.8;
+const A=K.map((_,i)=>[...K.map((_,j)=>Z[i].reduce((s,x,t)=>s+x*Z[j][t],0)+(i==j?lam:0)),Z[i].reduce((s,x,t)=>s+x*y[t],0)]);
+for(let i=0;i<p;i++){let m=i;for(let r=i+1;r<p;r++)if(Math.abs(A[r][i])>Math.abs(A[m][i]))m=r;[A[i],A[m]]=[A[m],A[i]];for(let r=0;r<p;r++)if(r!=i){const f=A[r][i]/A[i][i];for(let c=i;c<=p;c++)A[r][c]-=f*A[i][c]}}
+K.forEach((k,i)=>{k.b=A[i][p]/A[i][i];k.raw=k.b*sy/sd(D[k.id]);k.r=corr(D[k.id],D.rev)});
+const tot=K.reduce((s,k)=>s+Math.abs(k.b),0);K.forEach(k=>k.imp=Math.abs(k.b)/tot*100);
+const rk=[...K].sort((a,b)=>b.imp-a.imp),last=N-1;
+const vc=m=>{const a=K.map(k=>({k,v:k.raw*(D[k.id][m]-D[k.id][m-1])})).sort((a,b)=>Math.abs(b.v)-Math.abs(a.v));const t=D.rev[m]-D.rev[m-1];return{a,t,res:t-a.reduce((s,x)=>s+x.v,0)}};
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+Chart.defaults.font.family='system-ui,sans-serif';
+let ch={};const mk=(id,cfg)=>{ch[id]&&ch[id].destroy();Chart.defaults.color=css('--mu');ch[id]=new Chart($('#'+id),cfg)};
+const grid={color:'rgba(150,140,200,.18)'};
+// KPI cards
+$('#kp').innerHTML=[{id:'rev',n:'Revenue',u:'$k',d:0,dir:1,c:'#34d399'},{id:'profit',n:'Profit',u:'$k',d:0,dir:1,c:'#fbbf24'},...K.filter(k=>k.real&&k.id!='ads')].map(k=>{const a=D[k.id][last],b=D[k.id][last-1],pc=(a-b)/b*100,good=k.dir==0?pc>=0:pc*k.dir>=0;return`<div class="kpi" style="--c:${k.c}"><small>${k.n}</small><b>${fmt(a,k)}</b><span class="${good?'up':'dn'}">${pc>=0?'▲':'▼'} ${Math.abs(pc).toFixed(1)}% MoM</span></div>`}).join('');
+$('#ov').innerHTML=K.map(k=>`<option value="${k.id}">${k.n}</option>`).join('');
+$('#mo').innerHTML=L.map((l,i)=>i?`<option value="${i}" ${i==last?'selected':''}>${l}</option>`:'').join('');
+function c1(){const k=K.find(x=>x.id==$('#ov').value);mk('c1',{type:'line',data:{labels:L,datasets:[{label:'Revenue $k',data:D.rev,borderColor:'#34d399',backgroundColor:'rgba(52,211,153,.15)',fill:true,tension:.35,pointRadius:0},{label:'Profit $k',data:D.profit,borderColor:'#fbbf24',tension:.35,pointRadius:0},{label:k.n,data:D[k.id],borderColor:k.c,borderDash:[5,4],tension:.35,pointRadius:0,yAxisID:'y2'}]},options:{maintainAspectRatio:false,scales:{x:{grid:{display:false},ticks:{maxTicksLimit:8}},y:{grid},y2:{position:'right',grid:{display:false}}}}})}
+function c2(){mk('c2',{type:'bar',data:{labels:rk.map(k=>k.n),datasets:[{data:rk.map(k=>+k.imp.toFixed(1)),backgroundColor:rk.map(k=>k.c),borderRadius:6}]},options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid,title:{display:true,text:'% share of explained variation'}},y:{grid:{display:false}}}}})}
+function c3(){const m=+$('#mo').value,v=vc(m),items=[...v.a.slice(0,6),{k:{n:'Other / noise',c:'#64748b'},v:v.res}];
+mk('c3',{type:'bar',data:{labels:items.map(x=>x.k.n),datasets:[{data:items.map(x=>+x.v.toFixed(1)),backgroundColor:items.map(x=>x.v>=0?'#34d399':'#fb7185'),borderRadius:6}]},options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid,title:{display:true,text:'$k revenue impact'}},x:{grid:{display:false},ticks:{maxRotation:40}}}}});
+$('#vt').innerHTML=`${L[m-1]} → ${L[m]}: revenue <b class="${v.t>=0?'up':'dn'}">${v.t>=0?'+':''}${v.t.toFixed(0)}k</b>. Biggest mover: <b>${v.a[0].k.n}</b> (${v.a[0].v>=0?'+':''}${v.a[0].v.toFixed(0)}k).`}
+function feed(){const v=vc(last),top=rk[0],van=K.filter(k=>!k.real).sort((a,b)=>b.r-a.r)[0];
+$('#feed').innerHTML=`<div class="ins" style="--c:#a78bfa">🎯 <b>${top.n}</b> and <b>${rk[1].n}</b> together explain ${(top.imp+rk[1].imp).toFixed(0)}% of revenue variation. Prioritise them in the exec scorecard.</div>
+<div class="ins" style="--c:${v.t>=0?'#34d399':'#fb7185'}">📈 ${L[last]} revenue ${v.t>=0?'rose':'fell'} ${Math.abs(v.t).toFixed(0)}k; main cause: <b>${v.a[0].k.n}</b>.</div>
+<div class="ins" style="--c:#fbbf24">⚠️ <b>${van.n}</b> correlates ${van.r.toFixed(2)} with revenue but carries only ${van.imp.toFixed(1)}% unique importance: both just trend upward over time, so it is a vanity metric.</div>`;
+$('#ct').innerHTML='<table><tr><th>KPI</th><th>Correlation</th><th style="width:40%">Strength</th></tr>'+[...K].sort((a,b)=>Math.abs(b.r)-Math.abs(a.r)).map(k=>`<tr><td>${k.n}</td><td>${k.r.toFixed(2)}</td><td><div class="bar"><i style="width:${Math.abs(k.r)*100}%;background:${k.r>=0?k.c:'#fb7185'}"></i></div></td></tr>`).join('')+'</table>'}
+// agent
+const bot=(h)=>{const c=$('#chat'),d=document.createElement('div');d.className='m b';d.innerHTML='…';c.append(d);c.scrollTop=1e9;setTimeout(()=>{d.innerHTML=h;c.scrollTop=1e9},550)};
+const user=t=>{const d=document.createElement('div');d.className='m u';d.textContent=t;$('#chat').append(d)};
+function fc(){const x=[...Array(12).keys()],y=D.rev.slice(-12),mx=5.5,my=mean(y),b=x.reduce((s,v,i)=>s+(v-mx)*(y[i]-my),0)/x.reduce((s,v)=>s+(v-mx)**2,0);return[1,2,3].map(h=>my+b*(11+h-mx))}
+function ans(t){t=t.toLowerCase();const v=vc(last);
+if(/vanity|noise|ignore|follow|press/.test(t)){const w=K.filter(k=>!k.real);return`<b>Metrics to de-prioritise:</b><br>${w.map(k=>`• ${k.n}: correlation ${k.r.toFixed(2)} but unique importance only ${k.imp.toFixed(1)}%.`).join('<br>')}<br>Evidence: they move with the calendar, not with revenue once real drivers are controlled for.`}
+if(/why|drop|fall|rise|change|month|explain|happen/.test(t))return`<b>${L[last-1]} → ${L[last]}:</b> revenue ${v.t>=0?'up':'down'} <b>${Math.abs(v.t).toFixed(0)}k</b>.<br>${v.a.slice(0,3).map(x=>`• ${x.k.n}: ${x.v>=0?'+':''}${x.v.toFixed(0)}k (${fmt(D[x.k.id][last-1],x.k)} → ${fmt(D[x.k.id][last],x.k)})`).join('<br>')}<br>• Unexplained / noise: ${v.res>=0?'+':''}${v.res.toFixed(0)}k.<br><i>Tip: change the month on the Dashboard tab for any other period.</i>`;
+if(/forecast|next|predict|future|trend/.test(t)){const f=fc();return`<b>3-month revenue outlook</b> (linear trend of the last 12 months):<br>${f.map((x,i)=>`• ${new Date(2026,10+i,1).toLocaleString('en',{month:'short'})}: ~$${x.toFixed(0)}k`).join('<br>')}<br>Confidence is moderate: this is a trend extrapolation, not a causal forecast. Use the Simulator for scenario planning.`}
+if(/what if|simulat|increase|improve|boost|scenario/.test(t)){const c=K.find(k=>k.id=='conv'),d=c.raw*D.conv[last]*.1;return`<b>Example scenario:</b> raising conversion rate by 10% (${fmt(D.conv[last],c)} → ${fmt(D.conv[last]*1.1,c)}) adds about <b class="up">+$${d.toFixed(0)}k</b> monthly revenue, holding everything else fixed. Try your own combinations in the <a href="#" onclick="go('s');return false" style="color:var(--ac2)">Simulator</a>.`}
+if(/risk|churn|warn|danger|threat/.test(t)){const r=K.filter(k=>k.real).map(k=>({k,v:(D[k.id][last]-D[k.id][last-1])/D[k.id][last-1]*k.dir*k.imp})).sort((a,b)=>a.v-b.v)[0];return`<b>Biggest watch-item:</b> ${r.k.n}. It moved the wrong way last month and has ${r.k.imp.toFixed(1)}% importance on revenue. A reversal here is the fastest route to a revenue miss.`}
+if(/recommend|action|prior|should|focus|do/.test(t))return`<b>Recommended actions</b><br>${rk.filter(k=>k.real).slice(0,3).map((k,i)=>`${i+1}. ${k.dir<0?'Reduce':'Grow'} <b>${k.n}</b> — ${k.imp.toFixed(0)}% importance; ${Math.abs(k.raw).toFixed(1)}k revenue per unit.`).join('<br>')}<br>4. Drop ${K.filter(k=>!k.real)[0].n} from the board scorecard.`;
+if(/driver|matter|important|kpi|top|explain revenue|best/.test(t))return`<b>Top KPI drivers of revenue</b><br>${rk.slice(0,5).map((k,i)=>`${i+1}. ${k.n} — ${k.imp.toFixed(1)}% importance (r = ${k.r.toFixed(2)})<div class="bar"><i style="width:${k.imp*3}%;background:${k.c}"></i></div>`).join('')}Method: ridge regression on 24 months of standardized KPIs.`;
+return'I can explain <b>top drivers</b>, <b>why revenue changed</b>, <b>vanity metrics</b>, <b>risks</b>, <b>recommendations</b>, a <b>forecast</b> or a <b>what-if</b>. Try one of the chips below.'}
+const ask=t=>{if(!t.trim())return;user(t);bot(ans(t));$('#q').value=''};
+['Which KPIs matter most?','Why did revenue change last month?','Which metrics are vanity?','What are the risks?','What should we do?','Forecast next 3 months','What if conversion improves?'].forEach(t=>{const b=document.createElement('button');b.className='chip';b.textContent=t;b.onclick=()=>ask(t);$('#chips').append(b)});
+$('#go').onclick=()=>ask($('#q').value);$('#q').onkeydown=e=>e.key=='Enter'&&ask($('#q').value);
+// simulator
+const sk=rk.filter(k=>k.real).slice(0,6);
+$('#sl').innerHTML=sk.map(k=>`<div class="sl"><div><span style="color:${k.c}">● ${k.n}</span><b id="v_${k.id}">0%</b></div><input type="range" min="-20" max="20" value="0" id="r_${k.id}"></div>`).join('');
+function sim(){let t=0,it=[];sk.forEach(k=>{const p=+$('#r_'+k.id).value;$('#v_'+k.id).textContent=(p>0?'+':'')+p+'%';const v=k.raw*D[k.id][last]*p/100;t+=v;it.push(v)});
+$('#base').textContent='$'+D.rev[last].toFixed(0)+'k';$('#dl').textContent=(t>=0?'+':'−')+'$'+Math.abs(t).toFixed(0)+'k';$('#dp').textContent=`${(t/D.rev[last]*100).toFixed(1)}% vs baseline · est. profit ${(t*.24>=0?'+':'−')}$${Math.abs(t*.24).toFixed(0)}k`;
+mk('c4',{type:'bar',data:{labels:sk.map(k=>k.n),datasets:[{data:it.map(x=>+x.toFixed(1)),backgroundColor:it.map(x=>x>=0?'#34d399':'#fb7185'),borderRadius:6}]},options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid},x:{grid:{display:false},ticks:{maxRotation:40}}}}})}
+sk.forEach(k=>$('#r_'+k.id).oninput=sim);$('#rs').onclick=()=>{sk.forEach(k=>$('#r_'+k.id).value=0);sim()};
+// nav
+function go(t){document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('on',s.id==t));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t==t));if(t=='d'){c1();c2();c3()}if(t=='s')sim()}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>go(b.dataset.t));
+$('#ov').onchange=c1;$('#mo').onchange=c3;feed();
+bot(`Hello! I’m your decision-intelligence agent. I analysed <b>${K.length} KPIs</b> against revenue over 24 months. Top driver: <b>${rk[0].n}</b>. Ask me anything below.`);
+</script></body></html>
